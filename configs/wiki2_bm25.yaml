@@ -1,0 +1,43 @@
+# Configuration for Phase 1 Reproducibility on TRQA-Wiki2 (Partial Wikipedia Corpus)
+
+dataset:
+  hf_dataset_name: "mahtaa/trqa"
+  hf_experiments_repo: "mahtaa/trqa_experiments"
+  subset: "wiki2"
+  splits:
+    - "validation"   # 1,083 queries (wiki2_validation)
+    - "test"         # 1,258 queries (wiki2_test)
+  local_data_dir: "data/trqa"
+  bm25_index_dir: "data/trqa_experiments/indices/wiki_partial/bm25_partial"
+
+bm25:
+  k1: 0.9
+  b: 0.4
+  threads: 16
+  max_eval_k: 1000
+  session_cache_top_n: 100
+  recall_cutoffs: [3, 10, 100, 1000]
+
+single_step_rag:
+  model_name_or_path: "Qwen/Qwen2.5-7B-Instruct"
+  top_k_docs: 50
+  max_doc_chars: 1200
+  max_new_tokens: 512
+  temperature: 0.0
+  do_sample: false
+  dtype: "float16"   # RTX 2080 Ti (Turing sm_75) requires float16, not bfloat16
+
+search_r1:
+  model_name_or_path: "PeterJinGo/SearchR1-nq_hotpotqa_train-qwen2.5-7b-em-ppo"
+  top_k_per_search: 3
+  max_turns: 10
+  max_new_tokens_per_turn: 512
+  max_doc_chars: 1200
+  temperature: 0.0
+  do_sample: false
+  dtype: "float16"
+
+evaluation:
+  sm_thresholds: [10, 20, 50, 90]
+  logs_dir: "logs"
+

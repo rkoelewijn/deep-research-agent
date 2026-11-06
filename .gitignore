@@ -216,3 +216,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Cluster skeleton symlinks and local directories
+/data
+/data/
+/logs
+/logs/
+/venv
+/venv/
+
